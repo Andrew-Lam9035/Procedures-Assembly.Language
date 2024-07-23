@@ -1,0 +1,50 @@
+section .text
+        global _start
+
+_start:
+        mov ecx, 27
+        mov [count], ecx ;Make ecx have 26 and put that in count. This will be the counter for the loop next.
+        
+       
+next:
+        call printChar ;Use two procedures
+        call printSpace ;printChar is for printing a character
+                                    ;printSpace is for printing a space                
+        mov eax, [num] ;With eax, increase num until the counter reaches zero.
+        inc eax
+        mov [num], eax
+        mov ecx, [count] ;With ecx, decreases counter from 26 until all of the characters are printed.
+        dec ecx
+        mov [count], ecx
+        loop next
+        
+        jmp exit
+
+
+printChar:
+        mov eax, 4
+        mov ebx, 1
+        mov ecx, num ;num is the ASCII code for a character like num is 65. Then it should print A
+        mov edx, 1          
+        int 0x80
+        ret
+        
+printSpace:
+        mov eax, 4
+        mov ebx, 1
+        mov ecx, space ;space is always 10 so it will always print a new line
+        mov edx, 1
+        int 0x80
+        ret
+
+exit:
+        mov eax, 1
+        int 0x80
+
+segment .bss
+        count resb 1
+        
+section .data
+        space dd 10        ;in ASCII, the new line is decimal 10
+        num dd 65
+        
